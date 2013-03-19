@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TestWindow.Ribbon
 {
-    public enum RibbonItemSizeType
+    public enum RibbonItemSizeStyle
     {
         Small,
         //Medium,   // 暂不考虑实现

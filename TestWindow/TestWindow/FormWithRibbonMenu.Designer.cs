@@ -35,7 +35,6 @@
             // 
             this.ribbonBarControl.Location = new System.Drawing.Point(12, 1);
             this.ribbonBarControl.Name = "ribbonBarControl";
-            this.ribbonBarControl.Renderer = null;
             this.ribbonBarControl.RibbonBar = null;
             this.ribbonBarControl.Size = new System.Drawing.Size(567, 137);
             this.ribbonBarControl.TabIndex = 0;

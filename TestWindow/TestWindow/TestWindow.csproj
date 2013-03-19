@@ -114,6 +114,12 @@
     <None Include="Resources\CustomerExpansion_32.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\toolbar_input_16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\toolbar_help_16.png" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="DirectUI\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

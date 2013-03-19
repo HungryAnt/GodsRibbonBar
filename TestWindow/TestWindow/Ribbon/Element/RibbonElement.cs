@@ -9,7 +9,13 @@ namespace TestWindow.Ribbon
 {
     public class RibbonElement
     {
-        public Control ParentControl { get; set; }
+        public RibbonBarControl RibbonBarControl { get; set; }
+
+        public RibbonRenderer Renderer
+        {
+            get;
+            set;
+        }
 
         Font _font;
         public virtual Font Font
@@ -18,9 +24,9 @@ namespace TestWindow.Ribbon
             {
                 if (_font == null)
                 {
-                    if (ParentControl != null)
+                    if (RibbonBarControl != null)
                     {
-                        return ParentControl.Font;
+                        return RibbonBarControl.Font;
                     }
                 }
                 return RibbonItemUtils.DefaultFont();

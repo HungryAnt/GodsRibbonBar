@@ -66,5 +66,12 @@ namespace TestWindow.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        internal static System.Drawing.Bitmap Toolbar_help_16 {
+            get {
+                object obj = ResourceManager.GetObject("Toolbar_help_16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

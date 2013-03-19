@@ -9,32 +9,8 @@ namespace TestWindow.Ribbon
 {
     public /*abstract*/ class RibbonItem : RibbonElement
     {
-        RibbonItemSizeType _sizeStyle = RibbonItemSizeType.Large;
-        public RibbonItemSizeType SizeStyle
-        {
-            get
-            {
-                return _sizeStyle;
-            }
-            set
-            {
-                _sizeStyle = value;
-            }
-        }
-
         public virtual Image Image { get; set; }
         public ContentAlignment ImageAlign { get; set; }
-
-        static readonly Size SMALL_IMAGE_SIZE = new Size(16, 16);
-        static readonly Size LARGE_IMAGE_SIZE = new Size(32, 32);
-
-        public Size ImageSize
-        {
-            get
-            {
-                return _sizeStyle == RibbonItemSizeType.Large ? LARGE_IMAGE_SIZE : SMALL_IMAGE_SIZE;
-            }
-        }
 
         public int ImageTextSpacing { get; set; }
 
@@ -45,6 +21,19 @@ namespace TestWindow.Ribbon
         public virtual bool Enabled { get; set; }
         public bool Visible { get; set; }
 
+
+        RibbonItemSizeStyle _sizeStyle = RibbonItemSizeStyle.Large;
+        public RibbonItemSizeStyle SizeStyle
+        {
+            get
+            {
+                return _sizeStyle;
+            }
+            set
+            {
+                _sizeStyle = value;
+            }
+        }
         
         public Rectangle ContentRectangle
         {
@@ -55,48 +44,21 @@ namespace TestWindow.Ribbon
             }
         }
 
-        public Rectangle ImageRectangle
+        public virtual Rectangle ImageRectangle
         {
             get
             {
-                if (Image != null)
-                {
-                    if (ImageAlign == ContentAlignment.MiddleLeft)
-                    {
-                        int prefferedHeight = Math.Max(_cachedPreferredSize.Height, ImageSize.Height);
-
-                        return new Rectangle(
-                            new Point(Bounds.Left + Padding.Left,
-                                Bounds.Top + Padding.Top + (prefferedHeight - ImageSize.Height) / 2),
-                            ImageSize);
-                    }
-                    else if (ImageAlign == ContentAlignment.TopCenter)
-                    {
-                        int prefferedWidth = Math.Max(_cachedPreferredSize.Width, ImageSize.Width);
-
-                        return new Rectangle(
-                            new Point(Bounds.Left + Padding.Left + (prefferedWidth - ImageSize.Width) / 2,
-                                Bounds.Top + Padding.Top),
-                            ImageSize);
-                    }
-                }
-                return ContentRectangle;
+                return Rectangle.Empty; 
             }
         }
 
-//         public Rectangle TextRectangle
-//         {
-//             get
-//             {
-//                 Size textSize = GetPrefferedTextSize(Text);
-// 
-//                 if (SizeStyle == RibbonItemSizeType.Large)
-//                 {
-// 
-//                     return new Rectangle(Bounds.Left + Padding.Left, )
-//                 }
-//             }
-//         }
+        public virtual Rectangle TextRectangle
+        {
+            get
+            {
+                return Rectangle.Empty;
+            }
+        }
 
         public event EventHandler Click;
         public event PaintEventHandler Paint;
@@ -107,52 +69,9 @@ namespace TestWindow.Ribbon
             return Parent;
         }
 
-        const int MIN_WIDTH = 60;
-        const int MIN_HEIGHT = 25;
-
-        Size _cachedPreferredSize;
-
-        public virtual Size GetPreferredSize(/*Size constrainingSize*/)
+        public virtual Size GetPreferredSize()
         {
-            int width = Padding.Horizontal;
-            int height = Padding.Vertical;
-
-            if (Image != null)
-            {
-                if (ImageAlign == ContentAlignment.MiddleLeft)
-                {
-                    width += ImageSize.Width + ImageTextSpacing;
-                }
-                else if (ImageAlign == ContentAlignment.TopCenter)
-                {
-                    height += ImageSize.Height + ImageTextSpacing;
-                }
-            }
-
-            if (!string.IsNullOrEmpty(Text))
-            {
-                Size textSize = GetPrefferedTextSize(Text);
-
-                width += textSize.Width;
-
-                if (Image != null && ImageAlign == ContentAlignment.MiddleLeft)
-                {
-                    height = Math.Max(height, textSize.Height + Padding.Vertical);
-                }
-                else
-                {
-                    height += textSize.Height;
-                }
-            }
-
-            _cachedPreferredSize = new Size(Math.Max(width, MIN_WIDTH), Math.Max(height, MIN_HEIGHT));
-
-            return _cachedPreferredSize;
-        }
-
-        Size GetPrefferedTextSize(string text)
-        {
-            return TextRenderer.MeasureText(Text, Font);
+            return new Size(60, 25);
         }
 
         public void Invalidate()
@@ -172,13 +91,42 @@ namespace TestWindow.Ribbon
             }
         }
 
-//         public void Draw(PaintEventArgs e)
-//         {
-//             OnPaint(e);
-//         }
+        const int SMALL_MIN_WIDTH = 20;
+        const int SMALL_MIN_HEIGHT = 20;
+
+        const int LARGE_MIN_WIDTH = 50;
+        const int LARGE_MIN_HEIGHT = 80;
+
+        protected Size PreparePreferedSize(int width, int height)
+        {
+            int minWidth;
+            int minHeight;
+            if (SizeStyle == RibbonItemSizeStyle.Small)
+            {
+                minWidth = SMALL_MIN_WIDTH;
+                minHeight = SMALL_MIN_HEIGHT;
+            }
+            else
+            {
+                minWidth = LARGE_MIN_WIDTH;
+                minHeight = LARGE_MIN_HEIGHT;
+            }
+
+            return new Size(Math.Max(width, minWidth), Math.Max(height, minHeight));
+        }
+
+        public void Draw(PaintEventArgs e)
+        {
+            OnPaint(e);
+        }
 
         protected virtual void OnPaint(PaintEventArgs e)
         {
+            if (Renderer != null)
+            {
+                Renderer.DrawItemBackground(new RibbonItemRenderEventArgs(e.Graphics, this));
+            }
+
             if (Paint != null)
             {
                 Paint(this, e);

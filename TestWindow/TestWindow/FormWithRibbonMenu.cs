@@ -29,26 +29,29 @@ namespace TestWindow
                     {
                         new RibbonButton()
                         {
-                            SizeStyle = RibbonItemSizeType.Large,
+                            SizeStyle = RibbonItemSizeStyle.Large,
                             Image = Resources.CustomerExpansion_32,
-                            ImageAlign = ContentAlignment.TopCenter,
-                            Text = "Ant TestAnt TestAnt TestAnt Test",
+                            Text = "Gods_巨蚁",
                         },
-                        new RibbonItem()
+                        new RibbonButton()
                         {
-                            SizeStyle = RibbonItemSizeType.Small
+                            Image = Resources.Toolbar_help_16,
+                            SizeStyle = RibbonItemSizeStyle.Small,
+                            Text = "Hello Ribbon",
                         },
-                        new RibbonItem()
+                        new RibbonButton()
                         {
-                            SizeStyle = RibbonItemSizeType.Small
+                            Image = Resources.Toolbar_help_16,
+                            SizeStyle = RibbonItemSizeStyle.Small,
+                            Text = "Sky is mine",
                         },
                     }
                     ),
                 new RibbonGroup(
                     new RibbonItem[]
                     {
-                        new RibbonItem(),
-                        new RibbonItem(),
+                        new RibbonButton(),
+                        new RibbonButton(),
                     })
             };
 

@@ -71,10 +71,10 @@ namespace TestWindow.Ribbon
                 {
                     switch (item.SizeStyle)
                     {
-                        case RibbonItemSizeType.Large:
+                        case RibbonItemSizeStyle.Large:
                             TravelLargeItem(item);
                             break;
-                        case RibbonItemSizeType.Small:
+                        case RibbonItemSizeStyle.Small:
                             TravelSmallItem(item);
                             break;
                     }
